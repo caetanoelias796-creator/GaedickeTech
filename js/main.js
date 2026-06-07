@@ -1163,7 +1163,7 @@ function initSunflowerCanvas() {
 // ==========================================================================
 // 10. MODAL REGISTRATION & TICKET SYSTEM LOGIC
 // ==========================================================================
-const GOOGLE_SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbzbUdD6ZKuztMD9gQYFg_gKs57efVe7a14tvgHR6o3wf_5uGffQGHjwxsYhCTjhL_g4/exec";
+const GOOGLE_SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbzl4AO_eoTkU3_rdoDRR5HmIjftUWrUcrFHveWSGe87RGvce2BI9EVUG1T0fb_ueElF/exec";
 
 // Modal Audio Effects
 const ModalAudio = {
