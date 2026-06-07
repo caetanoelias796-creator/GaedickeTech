@@ -1218,6 +1218,16 @@ window.closeModal = function() {
     document.getElementById('registration-modal').classList.remove('active');
 }
 
+window.openMascotChat = function() {
+    ModalAudio.playClick();
+    const chatWin = document.getElementById('girabot-window');
+    if (chatWin) {
+        chatWin.classList.add('active');
+        const input = document.getElementById('girabot-input');
+        if (input) input.focus();
+    }
+}
+
 window.openAdminModal = function() {
     ModalAudio.playClick();
     updateAdminTable();

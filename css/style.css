@@ -2269,3 +2269,14 @@ footer {
 body.menu-open {
   overflow: hidden;
 }
+
+/* Project Action Buttons interactive effects */
+.project-action-btn {
+  transition: var(--transition-smooth);
+}
+
+.project-action-btn:hover {
+  opacity: 0.8;
+  filter: brightness(1.2);
+  text-shadow: 0 0 10px var(--primary-yellow-glow);
+}
