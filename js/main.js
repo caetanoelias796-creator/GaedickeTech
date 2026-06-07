@@ -1232,8 +1232,8 @@ window.closeAdminModal = function() {
 function updateAdminTable() {
     const tbody = document.getElementById('admin-table-body');
     if (!tbody) return;
-    tbody.innerHTML = '';
     
+    // 1. Carrega dados do localStorage imediatamente como fallback/estado inicial rápido
     let list = [];
     try {
         const existing = localStorage.getItem('arena_registrations');
@@ -1244,7 +1244,55 @@ function updateAdminTable() {
         console.error("Erro ao ler inscritos do localStorage", err);
     }
     
-    if (list.length === 0) {
+    renderTableData(list);
+    
+    // 2. Se a URL da API do Google Sheets estiver configurada, puxa os dados centralizados da nuvem
+    if (GOOGLE_SHEETS_API_URL !== "") {
+        // Insere indicador visual de sincronização
+        const modalBox = document.querySelector('#admin-modal .modal-box');
+        let loadingIndicator = document.getElementById('admin-sync-status');
+        if (!loadingIndicator) {
+            loadingIndicator = document.createElement('div');
+            loadingIndicator.id = 'admin-sync-status';
+            loadingIndicator.style.textAlign = 'center';
+            loadingIndicator.style.fontSize = '12px';
+            loadingIndicator.style.color = 'var(--primary-yellow)';
+            loadingIndicator.style.marginTop = '10px';
+            loadingIndicator.style.fontFamily = 'var(--font-body)';
+            if (modalBox) modalBox.appendChild(loadingIndicator);
+        }
+        loadingIndicator.innerText = '🔄 Sincronizando com a Planilha na Nuvem...';
+        loadingIndicator.style.color = 'var(--primary-yellow)';
+
+        fetch(GOOGLE_SHEETS_API_URL)
+            .then(res => {
+                if (!res.ok) throw new Error("Erro na requisição http");
+                return res.json();
+            })
+            .then(cloudList => {
+                if (Array.isArray(cloudList)) {
+                    renderTableData(cloudList);
+                    // Atualiza o localStorage com o banco consolidado para offline
+                    localStorage.setItem('arena_registrations', JSON.stringify(cloudList));
+                    loadingIndicator.innerText = '✅ Sincronizado com a nuvem!';
+                    loadingIndicator.style.color = 'var(--primary-green)';
+                }
+            })
+            .catch(err => {
+                console.error("Erro ao sincronizar com Google Sheets:", err);
+                loadingIndicator.innerText = '⚠️ Conexão offline. Exibindo dados locais.';
+                loadingIndicator.style.color = '#ef4444';
+            });
+    }
+}
+
+// Função auxiliar para desenhar as linhas da tabela
+function renderTableData(list) {
+    const tbody = document.getElementById('admin-table-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    
+    if (!list || list.length === 0) {
         tbody.innerHTML = `
             <tr>
                 <td colspan="5" style="padding: 30px; text-align: center; color: var(--text-secondary);">
@@ -1261,7 +1309,7 @@ function updateAdminTable() {
         tr.innerHTML = `
             <td style="padding: 12px; font-weight: 500; text-transform: uppercase;">${item.name}</td>
             <td style="padding: 12px;">${item.grade}</td>
-            <td style="padding: 12px;"><span style="color: ${item.activity === 'Jogos' ? 'var(--primary-yellow)' : 'var(--primary-green)'}; font-weight: 600;">${item.activity.toUpperCase()}</span></td>
+            <td style="padding: 12px;"><span style="color: ${item.activity === 'Jogos' ? 'var(--primary-yellow)' : 'var(--primary-green)'}; font-weight: 600;">${(item.activity || '').toUpperCase()}</span></td>
             <td style="padding: 12px; font-family: var(--font-title); color: var(--primary-yellow); font-size: 11px;">${item.uuid}</td>
             <td style="padding: 12px; color: var(--text-secondary); font-size: 12px;">${item.date}</td>
         `;
