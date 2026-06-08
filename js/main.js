@@ -69,8 +69,8 @@ function initHeaderScroll() {
    2. COUNTDOWN TIMER
    ========================================================================== */
 function initCountdown() {
-  // Set date: October 12, 2026
-  const targetDate = new Date('Oct 12, 2026 09:00:00').getTime();
+  // Set date: October 16, 2026
+  const targetDate = new Date('Oct 16, 2026 13:30:00').getTime();
 
   const daysEl = document.getElementById('days');
   const hoursEl = document.getElementById('hours');
