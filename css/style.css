@@ -2286,6 +2286,10 @@ body.menu-open {
 }
 
 /* --- CYBER HUD SIDE BORDERS (DESKTOP) --- */
+.cyber-side-hud {
+  display: none;
+}
+
 @media (min-width: 1360px) {
   .cyber-side-hud {
     display: flex;
