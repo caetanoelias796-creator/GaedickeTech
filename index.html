@@ -32,6 +32,42 @@
   </video>
   <div class="global-bg-overlay"></div>
 
+  <!-- Cyber HUD Side Borders (Visible on large desktop screens) -->
+  <div class="cyber-side-hud left">
+    <div class="hud-scanner"></div>
+    <div class="hud-bracket-top"></div>
+    <div class="hud-line green"></div>
+    <div class="hud-content">
+      <div class="hud-tag">SYS_LOC_L01</div>
+      <div class="hud-title">SYSTEM_ACTIVE</div>
+      <div class="hud-binary-stream" id="hud-binary-left">01001001 01000001</div>
+      <div class="hud-hex-stream" id="hud-hex-left">0x7F 0x1A 0xC4</div>
+      <div class="hud-bar-graph">
+        <div class="hud-bar-fill" style="width: 80%; background: var(--primary-green);"></div>
+      </div>
+      <div class="hud-info">GAEDICKE COBOT V1</div>
+    </div>
+    <div class="hud-bracket-bottom"></div>
+  </div>
+
+  <div class="cyber-side-hud right">
+    <div class="hud-scanner"></div>
+    <div class="hud-bracket-top"></div>
+    <div class="hud-line yellow"></div>
+    <div class="hud-content">
+      <div class="hud-tag">SYS_SEC_R09</div>
+      <div class="hud-title">GAME_STATUS_OK</div>
+      <div class="hud-binary-stream" id="hud-binary-right">01010100 01000101</div>
+      <div class="hud-hex-stream" id="hud-hex-right">0x8B 0x3E 0xF2</div>
+      <div class="hud-bar-graph">
+        <div class="hud-bar-fill" style="width: 65%; background: var(--primary-yellow);"></div>
+      </div>
+      <div class="hud-info">ARENA MODE ACTIVE</div>
+    </div>
+    <div class="hud-bracket-bottom"></div>
+  </div>
+
+
   <!-- HEADER HUD -->
   <header>
     <div class="nav-container">
@@ -906,5 +942,8 @@
   
   <!-- Main Script -->
   <script src="js/main.js"></script>
+
+  <!-- Custom mouse cursor element -->
+  <div class="custom-cursor" id="custom-cursor"></div>
 </body>
 </html>

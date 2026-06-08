@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initRobotTrackGame();
   initFAQAccordion();
   initGiraBotChat();
+  initCyberSideHUD();
+  initCustomCursor();
 });
 
 /* ==========================================================================
@@ -1069,6 +1071,95 @@ function initGiraBotChat() {
         }, 6000);
       }, 600);
     });
+  });
+}
+
+/* ==========================================================================
+   8B. CYBER SIDE HUD DYNAMIC TELEMETRY
+   ========================================================================== */
+function initCyberSideHUD() {
+  const binaryLeft = document.getElementById('hud-binary-left');
+  const binaryRight = document.getElementById('hud-binary-right');
+  const hexLeft = document.getElementById('hud-hex-left');
+  const hexRight = document.getElementById('hud-hex-right');
+  const barLeft = document.querySelector('.cyber-side-hud.left .hud-bar-fill');
+  const barRight = document.querySelector('.cyber-side-hud.right .hud-bar-fill');
+
+  function generateBinary(length) {
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += Math.round(Math.random());
+      if (i > 0 && (i + 1) % 8 === 0 && i < length - 1) {
+        result += ' ';
+      }
+    }
+    return result;
+  }
+
+  function generateHex() {
+    const hexChars = '0123456789ABCDEF';
+    let result = '0x';
+    result += hexChars[Math.floor(Math.random() * 16)];
+    result += hexChars[Math.floor(Math.random() * 16)];
+    return result;
+  }
+
+  setInterval(() => {
+    // Left side random values
+    if (binaryLeft) binaryLeft.textContent = generateBinary(16);
+    if (hexLeft) hexLeft.textContent = `${generateHex()} ${generateHex()} ${generateHex()}`;
+    if (barLeft) barLeft.style.height = `${Math.floor(Math.random() * 60) + 40}%`;
+
+    // Right side random values
+    if (binaryRight) binaryRight.textContent = generateBinary(16);
+    if (hexRight) hexRight.textContent = `${generateHex()} ${generateHex()} ${generateHex()}`;
+    if (barRight) barRight.style.height = `${Math.floor(Math.random() * 60) + 40}%`;
+  }, 1000);
+}
+
+/* ==========================================================================
+   8C. CUSTOM MOUSE CURSOR (SUNBOT MASCOT)
+   ========================================================================== */
+function initCustomCursor() {
+  const cursor = document.getElementById('custom-cursor');
+  if (!cursor) return;
+
+  // Detect if device supports hover (desktop/mouse)
+  if (window.matchMedia('(hover: hover)').matches) {
+    cursor.style.display = 'block';
+    document.documentElement.classList.add('custom-cursor-active');
+  } else {
+    return; // Do not apply cursor logic on mobile devices
+  }
+
+  // Update cursor position
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = `${e.clientX}px`;
+    cursor.style.top = `${e.clientY}px`;
+  });
+
+  // Track click state
+  document.addEventListener('mousedown', () => {
+    cursor.classList.add('click');
+  });
+
+  document.addEventListener('mouseup', () => {
+    cursor.classList.remove('click');
+  });
+
+  // Hover states on interactive items
+  const interactiveSelectors = 'a, button, select, input, textarea, .dohyo-btn, .game-dir-btn, .quick-reply-btn, .chassis-tab-btn, .filter-btn, .modal-close, .faq-question, .project-action-btn, .partner-logo, .submit-btn, .logo-wrapper';
+  
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(interactiveSelectors)) {
+      cursor.classList.add('hover');
+    }
+  });
+
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(interactiveSelectors)) {
+      cursor.classList.remove('hover');
+    }
   });
 }
 
